@@ -33,12 +33,12 @@ add_action('admin_menu', function () {
 });
 function admin_menu_simple_sse_chat() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        update_option('simple_sse_chat_chat_heder', $_POST['chat_heder']);
+        update_option('simple_sse_chat_header', $_POST['chat_heder']);
         ?>
         <div id="setting-error-settings-update" class="update-settings-error notice is-dismissible"><strong>Settings have been saved.</strong></div>
         <?php
     }
-    $chat_heder = get_option('simple_sse_chat_chat_heder', 'Simple Chat');
+    $chat_heder = get_option('simple_sse_chat_header', 'Simple Chat');
     ?>
         <div class="wrap">
             <h2>Simple Chat Settings</h2>
