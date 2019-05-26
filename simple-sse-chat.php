@@ -22,13 +22,13 @@ register_activation_hook(__FILE__, function () {
 // 管理画面のメニューに追加
 add_action('admin_menu', function () {
     add_menu_page(
-        'Simple Chat Settings', 
-        'Simple Chat', 
-        'manage_options', 
-        'simple-sse-chat', 
-        'admin_menu_simple_sse_chat', 
-        'dashicons-admin-comments', 
-        200
+        'Simple Chat Settings', // <title>タグの内容を設定
+        'Simple Chat', // 左メニューに表示される名前を設定
+        'manage_options', // 権限
+        'simple-sse-chat', // スラッグ
+        'admin_menu_simple_sse_chat', // メニューを開いたときに実行される関数名
+        'dashicons-admin-comments', // アイコン
+        200 // メニューの表示順、200と大きい数字にしたので、メニューの一番下に表示
     );
 });
 function admin_menu_simple_sse_chat() {
@@ -108,7 +108,13 @@ add_action('wp_ajax_event_streame', function () {
     header('Cache-Control: no-store');
     while(true) {
         printf("data: %s\n\n", json_encode([
-            'chat_data' => $wpdb->get_results("SELECT * FROM {$wpdb->prefix}simple_sse_chat ORDER BY id DESC LIMIT 10"),
+            'chat_data' => $wpdb->get_results(
+                "SELECT s.id, s.content, u.user_login
+                 FROM {$wpdb->prefix}simple_sse_chat s
+                 LEFT JOIN {$wpdb->prefix}users u ON s.user_id = u.id
+                 ORDER BY id DESC
+                 LIMIT 10"
+            ),
         ]));
         ob_end_flush();
         flush();

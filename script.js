@@ -1,4 +1,4 @@
-const { home_url, user_name } = simple_sse_chat_data;
+const { home_url } = simple_sse_chat_data;
 
 const es = new EventSource(`${home_url}/wp-admin/admin-ajax.php?action=event_streame`);
 
@@ -13,11 +13,11 @@ es.addEventListener("message", e => {
     targetElement = document.getElementById("js-simple-sse-chat-body").querySelector("tbody");
     targetElement.innerHTML = ""
     chat_data.forEach(data => {
-        const { user_id, content } = data
+        const { user_login, content } = data
         targetElement.insertAdjacentHTML("afterbegin", `
             <tr>
                 <td>
-                    <small>${user_name}</small>
+                    <small>${user_login}</small>
                     <br>
                     <strong>${content}</strong>
                 </td>
