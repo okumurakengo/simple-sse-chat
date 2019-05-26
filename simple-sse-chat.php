@@ -69,7 +69,7 @@ add_shortcode('simple_sse_chat', function () {
     </form>
     <style>
         .simple-sse-chat-container {
-            height: 300px;
+            height: 200px;
             overflow: scroll;
         }
     </style>
