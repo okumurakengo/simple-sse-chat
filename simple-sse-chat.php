@@ -85,7 +85,6 @@ add_action('the_content', function ($content) {
         wp_enqueue_script('simple_sse_chat', plugin_dir_url(__FILE__) . 'script.js');
         wp_localize_script('simple_sse_chat', 'simple_sse_chat_data', [
             'home_url' => home_url(),
-            'user_name' => wp_get_current_user()->user_login,
         ]);
     }
     return $content;
