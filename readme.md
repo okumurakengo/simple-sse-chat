@@ -8,4 +8,5 @@
 [simple_sse_chat]
 ```
 
-![Simple Chat](./sample.gif)
+![add short code](./sample_post.png)
+![Simple Chat](./sample_chat.gif)
