@@ -44,7 +44,7 @@ function admin_menu_simple_sse_chat() {
             <h2>Simple Chat Settings</h2>
             <form method="POST" action="">
                 <label for="chat_heder">チャットタイトル</label>
-                <textarea name="chat_heder" class="large-text"><?= $chat_heder ?></textarea>
+                <textarea name="chat_heder" class="large-text"><?= esc_textarea($chat_heder) ?></textarea>
                 <input type="submit" name="submit_scripts_update" class="button button-primary" value="UPDATE">
             </form>
         </div>
@@ -58,7 +58,7 @@ add_shortcode('simple_sse_chat', function () {
     ob_start();
     ?>
     <form id="js-simple-sse-chat-form">
-        <h2><?= $header ?></h2>
+        <h2><?= esc_html($header) ?></h2>
         <div class="simple-sse-chat-container">
             <table id="js-simple-sse-chat-body">
                 <tbody></tbody>
