@@ -23,6 +23,16 @@ register_activation_hook(__FILE__, function () {
     dbDelta($sql);
 });
 
+// プラグインが削除されたときに実行される
+function simple_sse_chat_uninstall () {
+    // TODO マルチサイトの考慮をするとより良いものとなる
+    //  see also https://github.com/okumurakengo/simple-sse-chat/pull/7
+    global $wpdb;
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}simple_sse_chat");
+    delete_option('simple_sse_chat_header');
+}
+register_uninstall_hook(__FILE__, 'simple_sse_chat_uninstall');
+
 // 管理画面のメニューに追加
 add_action('admin_menu', function () {
     add_menu_page(
