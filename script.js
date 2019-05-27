@@ -1,6 +1,6 @@
-const { home_url } = simple_sse_chat_data;
+const { home_url, nonce } = simple_sse_chat_data;
 
-const es = new EventSource(`${home_url}/wp-admin/admin-ajax.php?action=event_streame`);
+const es = new EventSource(`${home_url}/wp-admin/admin-ajax.php?action=event_streame&_wpnonce=${nonce}`);
 
 // 表示
 let lastId = 0;
@@ -37,6 +37,8 @@ document.getElementById("js-simple-sse-chat-form").addEventListener("submit", as
 
     // 入力値が空の場合は何もしない
     if (formData.get("chat-content") === "") return;
+
+    formData.append('security', nonce);
 
     // 登録のリクエスト
     const res = await fetch(`${home_url}/wp-admin/admin-ajax.php?action=chat_post`, {

@@ -37,6 +37,7 @@ add_action('admin_menu', function () {
 });
 function admin_menu_simple_sse_chat() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        check_admin_referer('hoge-fuga-piyo'); // CSRF対策
         update_option('simple_sse_chat_header', $_POST['chat_heder']);
         ?>
         <div id="setting-error-settings-update" class="update-settings-error notice is-dismissible"><strong>Settings have been saved.</strong></div>
@@ -47,6 +48,7 @@ function admin_menu_simple_sse_chat() {
         <div class="wrap">
             <h2>Simple Chat Settings</h2>
             <form method="POST" action="">
+                <?php wp_nonce_field( 'hoge-fuga-piyo'); ?>
                 <label for="chat_heder">チャットタイトル</label>
                 <textarea name="chat_heder" class="large-text"><?= esc_textarea($chat_heder) ?></textarea>
                 <input type="submit" name="submit_scripts_update" class="button button-primary" value="UPDATE">
@@ -89,6 +91,7 @@ add_action('the_content', function ($content) {
         wp_enqueue_script('simple_sse_chat', plugin_dir_url(__FILE__) . 'script.js');
         wp_localize_script('simple_sse_chat', 'simple_sse_chat_data', [
             'home_url' => home_url(),
+            'nonce' => wp_create_nonce('hoge-fuga-piyo'), // CSRF対策
         ]);
     }
     return $content;
@@ -96,6 +99,8 @@ add_action('the_content', function ($content) {
 
 // ajaxで入力値を保存
 add_action('wp_ajax_chat_post', function () {
+    check_ajax_referer('hoge-fuga-piyo', 'security'); // CSRF対策
+
     global $wpdb;
     $wpdb->insert($wpdb->prefix.'simple_sse_chat', [
         'user_id' => get_current_user_id(),
@@ -105,6 +110,10 @@ add_action('wp_ajax_chat_post', function () {
 
 // ajaxのhookだが、SSEも問題なかったのでこれを使用しました
 add_action('wp_ajax_event_streame', function () {
+    if (!wp_verify_nonce($_GET['_wpnonce'], 'hoge-fuga-piyo')) {
+        exit; // CSRF対策
+    }
+
     global $wpdb;
 
     header('Content-Type: text/event-stream');
