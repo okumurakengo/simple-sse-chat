@@ -33,6 +33,7 @@ add_action('admin_menu', function () {
 });
 function admin_menu_simple_sse_chat() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        check_admin_referer('hoge-fuga-piyo'); // CSRF対策
         update_option('simple_sse_chat_header', $_POST['chat_heder']);
         ?>
         <div id="setting-error-settings-update" class="update-settings-error notice is-dismissible"><strong>Settings have been saved.</strong></div>
@@ -43,6 +44,7 @@ function admin_menu_simple_sse_chat() {
         <div class="wrap">
             <h2>Simple Chat Settings</h2>
             <form method="POST" action="">
+                <?php wp_nonce_field( 'hoge-fuga-piyo'); ?>
                 <label for="chat_heder">チャットタイトル</label>
                 <textarea name="chat_heder" class="large-text"><?= $chat_heder ?></textarea>
                 <input type="submit" name="submit_scripts_update" class="button button-primary" value="UPDATE">
