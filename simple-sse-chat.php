@@ -4,6 +4,10 @@
     Description: Server Snet Eventsを使用した簡易チャット
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // プラグインがアクティブ化されたときに実行される
 register_activation_hook(__FILE__, function () {
     global $wpdb;
